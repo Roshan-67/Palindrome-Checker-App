@@ -1,23 +1,24 @@
 public class Palindrome {
      static void main() {
-         String input = "madam";
+         String input = "Madam In Eden Im Adam";
 
-         boolean isPalindrome = checkPalindrome(input, 0, input.length() - 1);
+         String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-         System.out.println("Input String : " + input);
+         int start = 0;
+         int end = normalized.length() - 1;
+         boolean isPalindrome = true;
+
+         while (start < end) {
+             if (normalized.charAt(start) != normalized.charAt(end)) {
+                 isPalindrome = false;
+                 break;
+             }
+             start++;
+             end--;
+         }
+
+         System.out.println("Original String  : " + input);
+         System.out.println("Normalized String: " + normalized);
          System.out.println("Is it a Palindrome? : " + isPalindrome);
      }
-
-    public static boolean checkPalindrome(String str, int start, int end) {
-
-        if (start >= end) {
-            return true;
-        }
-
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        return checkPalindrome(str, start + 1, end - 1);
-    }
 }
