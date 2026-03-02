@@ -2,16 +2,19 @@ public class Palindrome {
      static void main() {
          String input = "madam";
 
+         Queue<Character> queue = new LinkedList<>();
          Stack<Character> stack = new Stack<>();
 
          for (int i = 0; i < input.length(); i++) {
-             stack.push(input.charAt(i));
+             char ch = input.charAt(i);
+             queue.add(ch);
+             stack.push(ch);
          }
 
          boolean isPalindrome = true;
 
-         for (int i = 0; i < input.length(); i++) {
-             if (input.charAt(i) != stack.pop()) {
+         while (!queue.isEmpty()) {
+             if (queue.remove() != stack.pop()) {
                  isPalindrome = false;
                  break;
              }
