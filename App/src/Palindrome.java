@@ -2,21 +2,48 @@ public class Palindrome {
      static void main() {
          String input = "level";
 
-         PalindromeStrategy strategy = new StackStrategy();
-
-         boolean result = strategy.check(input);
-
          System.out.println("Input : " + input);
-         System.out.println("Is Palindrome? : " + result);
+         System.out.println();
+
+         long startTime = System.nanoTime();
+         boolean result1 = twoPointerCheck(input);
+         long endTime = System.nanoTime();
+
+         System.out.println("Two Pointer Result : " + result1);
+         System.out.println("Execution Time     : " + (endTime - startTime) + " ns");
+         System.out.println();
+
+         startTime = System.nanoTime();
+         boolean result2 = stackCheck(input);
+         endTime = System.nanoTime();
+
+         System.out.println("Stack Result       : " + result2);
+         System.out.println("Execution Time     : " + (endTime - startTime) + " ns");
+         System.out.println();
+
+         startTime = System.nanoTime();
+         boolean result3 = reverseCheck(input);
+         endTime = System.nanoTime();
+
+         System.out.println("Reverse Result     : " + result3);
+         System.out.println("Execution Time     : " + (endTime - startTime) + " ns");
      }
-}
-interface PalindromeStrategy {
-    boolean check(String input);
-}
-class StackStrategy implements PalindromeStrategy {
 
-    public boolean check(String input) {
+    public static boolean twoPointerCheck(String input) {
+        int start = 0;
+        int end = input.length() - 1;
 
+        while (start < end) {
+            if (input.charAt(start) != input.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    public static boolean stackCheck(String input) {
         java.util.Stack<Character> stack = new java.util.Stack<>();
 
         for (char c : input.toCharArray()) {
@@ -28,26 +55,16 @@ class StackStrategy implements PalindromeStrategy {
                 return false;
             }
         }
-
         return true;
     }
-}
-class DequeStrategy implements PalindromeStrategy {
 
-    public boolean check(String input) {
+    public static boolean reverseCheck(String input) {
+        String reversed = "";
 
-        java.util.Deque<Character> deque = new java.util.LinkedList<>();
-
-        for (char c : input.toCharArray()) {
-            deque.addLast(c);
+        for (int i = input.length() - 1; i >= 0; i--) {
+            reversed += input.charAt(i);
         }
 
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
+        return input.equals(reversed);
     }
 }
