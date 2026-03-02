@@ -1,34 +1,51 @@
 public class Palindrome {
      static void main() {
-         String input = "Madam In Eden Im Adam";
+         String input = "level";
 
-         PalindromeChecker checker = new PalindromeChecker();
+         PalindromeStrategy strategy = new StackStrategy();
 
-         boolean result = checker.checkPalindrome(input);
+         boolean result = strategy.check(input);
 
-         System.out.println("Input String : " + input);
-         System.out.println("Is it a Palindrome? : " + result);
+         System.out.println("Input : " + input);
+         System.out.println("Is Palindrome? : " + result);
      }
 }
-class PalindromeChecker {
+interface PalindromeStrategy {
+    boolean check(String input);
+}
+class StackStrategy implements PalindromeStrategy {
 
-    public boolean checkPalindrome(String input) {
+    public boolean check(String input) {
 
-        if (input == null) {
-            return false;
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
+        for (char c : input.toCharArray()) {
+            stack.push(c);
         }
 
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
-
-        int start = 0;
-        int end = normalized.length() - 1;
-
-        while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
-            start++;
-            end--;
+        }
+
+        return true;
+    }
+}
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean check(String input) {
+
+        java.util.Deque<Character> deque = new java.util.LinkedList<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
         }
 
         return true;
